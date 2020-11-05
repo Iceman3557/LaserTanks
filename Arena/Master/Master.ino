@@ -44,7 +44,6 @@ void loop()
     cycle[ii-1] = cycle[ii-1]%6; 
     Serial.println("Testing Transmission:");
    int a[] = {1,15,cycle[ii]};
-   collisionBuffer[ii-1][1]=cycle[ii-1]; // for powerup ii, store powertype
    transmissionEvent(a); // For Slave 1, set duration to be 5 seconds for speed powerup
    Serial.print(collisionBuffer[ii-1][0]);
    Serial.println(collisionBuffer[ii-1][1]);
@@ -59,7 +58,7 @@ void loop()
   }
   //printloop(); not sure what this does so ill leave it in
 
-  
+  emptyBuffer();
 }
 
 void printHex(unsigned int numberToPrint)
@@ -121,6 +120,7 @@ void receiving(int jj)
  
   void receiveEvent()
   {
+    String input = "";
     int powerup_info[3]; // Name,Duration,type
     while (0 < Wire.available())
      {
@@ -137,14 +137,20 @@ void receiving(int jj)
       Wire.write(trans[2]); // powerupType
       Wire.endTransmission(trans[0]);
       Serial.println("Sent val");
+      collisionBuffer[trans[0]][1]=trans[2]; // for powerup , store powertype
   }
-
- /* void testSlave()
-  {
-   //if(digitalRead(9)); // TESTING PURPOSE
-   //{
-   Serial.println("Yeh");
-   int a[] = {1,5};
-   transmissionEvent(a); // For Slave 1, set duration to be 5 seconds for speed powerup
   
-  }*/
+   void emptyBuffer()
+   {
+      for(intii=0;ii<POWER_NUM; ii++)
+      {
+        if(collisionBuffer[ii][0]>0)
+        {
+          Wire.write(ii);//Powerup_Num
+          Wire.write(collisionBuffer[0]);//Tank
+          Wire.write(collisionBuffer[1])//PowerType
+          
+          collisionBuffer[ii][0] = 0;//clear buffer
+        }
+      }
+   }
