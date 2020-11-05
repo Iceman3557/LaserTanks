@@ -121,15 +121,14 @@ void receiving(int jj)
  
   void receiveEvent()
   {
-    /*int powerup_info[3]; // Name,Duration,type
+    int powerup_info[3]; // Name,Duration,type
     while (0 < Wire.available())
      {
           powerup_info[0] = Wire.read();// Slave Number
           powerup_info[1]=Wire.read();// Duration for power up
-          powerup_info[3] = Wire.read();// Powerup Type
+          powerup_info[2] = Wire.read();// Powerup Type
           transmissionEvent(powerup_info); //
      }
-     */
   }
   void transmissionEvent(int trans[])
   {
